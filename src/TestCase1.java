@@ -29,4 +29,9 @@ public class TestCase1 extends Reaction
         this.C_A0 = source.C_A0;
         this.v_0 = source.v_0;
     }
+
+    public TestCase1 clone()
+    {
+        return new TestCase1(this);
+    }
 }
