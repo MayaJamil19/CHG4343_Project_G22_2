@@ -49,9 +49,10 @@ public class UncontrolledCSTR extends Reactor implements Function
         this.g_V = 0.0;
     }
 
-    protected void setGlobalVariables(double v, double[] opConditions, double[] reactionConditions, Reaction r)
+    protected void setGlobalVariables(double[] opConditions, double[] reactionConditions, Reaction r)
     {
         super.setGlobalVariables(r);
+
         this.g_V = g_V;
 
         this.g_opConditions = new double[opConditions.length];
@@ -69,8 +70,10 @@ public class UncontrolledCSTR extends Reactor implements Function
         }
     }
 
-    public double calculateExitConcentration(double[] opConditions, double[] reactionConditions, double t)
+    public double calculateExitConcentration(double[] opConditions, double[] reactionConditions, double t, Reaction r)
     {
+        this.setGlobalVariables(opConditions,reactionConditions,r);
+
 
     }
 }

@@ -34,4 +34,21 @@ public class TestCase1 extends Reaction
     {
         return new TestCase1(this);
     }
+
+    public double get_K_A()
+    {
+        return this.k_A;
+    }
+
+    public double getC_A0()
+    {
+        return this.C_A0;
+    }
+
+    public double getV_0()
+    {
+        return this.v_0;
+    }
+
+    public boolean setK_A()
 }

@@ -1,12 +1,13 @@
 public class RK4
 {
-    public static double integrate(double x_0, double x, double y_0, double h, Function f)
+    public static double integrate(double x_0, double y_0, double h, Function f)
     {
-        int n = (int)((x-x_0)/h);
-
-        double k1, k2, k3, k4, k5;
+        double k1, k2, k3, k4;
 
         double y=y_0;
+        double x = x_0;
+
+        int n = (int)((x-x_0)/h);
 
         for(int i=1;i<=n;i++)
         {
