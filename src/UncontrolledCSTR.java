@@ -117,8 +117,8 @@ public class UncontrolledCSTR extends Reactor implements Function
         return true;
     }
 
-    public double returnValue(double C)
+    public double calculateValue(double C, double t)
     {
-        return this.g_opConditions[0];
+        return this.g_opConditions[0]*(g_reactionConditions[1]-C)-g_reactionConditions[0]*C;
     }
 }
