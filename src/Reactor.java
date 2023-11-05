@@ -27,7 +27,7 @@ public abstract class Reactor
 
     public abstract Reactor clone();
 
-    public abstract double calculateExitConcentration(double[] opConditions, double[] reactionConditions, double t);
+    public abstract double calculateExitConcentration(double[] opConditions, double[] reactionConditions, Reaction r);
 
     public boolean equals(Object comparator)
     {
