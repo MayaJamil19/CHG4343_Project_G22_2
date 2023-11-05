@@ -1,12 +1,11 @@
-//Not sure if this class is good, I shouldn't put k_A, v_A and C_AO into an array maybe?
+//For test case 1 is this class even necessary? There are no classes that do calculations
 
 public class Reaction1 extends Reaction
 {
     private double[] reactionConditions;
 
     //reactionConditions[0] = k_A
-    //reactionConditions[1] = v_A
-    //reactionConditions[2] = C_A0
+    //reactionConditions[1] = C_A0
 
     public Reaction1(double[] reactionConditions)
     {
@@ -16,7 +15,11 @@ public class Reaction1 extends Reaction
             System.exit(0);
         }
 
-        //put if loop nested in for loop to check that values > 0
+        for(int i=0;i<reactionConditions.length;i++)
+        {
+            if(this.reactionConditions[i]<0.)
+                System.exit(0);
+        }
 
         this.reactionConditions = new double[reactionConditions.length];
 
@@ -64,6 +67,12 @@ public class Reaction1 extends Reaction
             return false;
         }
 
+        for(int i=0;i<reactionConditions.length;i++)
+        {
+            if(this.reactionConditions[i]<0.)
+                return false;
+        }
+
         this.reactionConditions = new double[reactionConditions.length];
 
         for(int i=0;i<reactionConditions.length;i++)
@@ -72,6 +81,11 @@ public class Reaction1 extends Reaction
         }
 
         return true;
+    }
+
+    public String toString() //Made this just in case we need it, might delete later
+    {
+        return "k_A: "+this.reactionConditions[0]+"\nC_A0: "+this.reactionConditions[1];
     }
 
     public boolean equals(Object comparator)

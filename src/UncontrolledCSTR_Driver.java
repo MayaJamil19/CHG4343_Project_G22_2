@@ -12,6 +12,8 @@ public class UncontrolledCSTR_Driver
         double[] reactionConditions = {k_A,C_A0};
         double[] opConditions = {v_0};
 
+        Reaction1 testCase1 = new Reaction1(reactionConditions);
+
         double[] C_A;
     }
 }
