@@ -7,7 +7,7 @@ public class RK4
         double y = y_0;
         double x = x_0;
 
-        for (int i = 1; ; i++)
+        for (int i=1; ;i++)
         {
             k1 = h*f.calculateValue(x,y);
             k2 = h*f.calculateValue(x+0.5*h,y+0.5*k1);
@@ -19,9 +19,10 @@ public class RK4
             // Calculate error at each step
             double epsilon = 100*Math.abs(newY-y)/Math.abs(y);
 
-            if (epsilon<0.01) {
+            if (epsilon<0.01)
+            {
                 System.out.println("Ɛ < 0.01 reached at x = "+x);
-                return y; // Return the y value when error < 0.01
+                return y;
             }
 
             y = newY;
