@@ -2,9 +2,6 @@ public class UncontrolledCSTR extends Reactor implements Function
 {
     private double[] g_opConditions;
     private double[] g_reactionConditions;
-    private double g_V; //Volume
-    private double g_C_A;
-    private double g_C_B;
 
     public UncontrolledCSTR()
     {
@@ -14,11 +11,6 @@ public class UncontrolledCSTR extends Reactor implements Function
 
     public UncontrolledCSTR(UncontrolledCSTR source)
     {
-        super(source);
-        this.g_V = source.g_V;
-        this.g_C_A = source.g_C_A;
-        this.g_C_B = source.g_C_B;
-
         if(source.g_opConditions == null)
             this.g_opConditions = null;
         else
@@ -47,22 +39,12 @@ public class UncontrolledCSTR extends Reactor implements Function
 
     protected void resetGlobalVariables()
     {
-        super.resetGlobalVariables();
         this.g_opConditions = null;
         this.g_reactionConditions = null;
-        this.g_V = 0.0;
-        this.g_C_A = 0.0;
-        this.g_C_B = 0.0;
     }
 
-    protected void setGlobalVariables(double[] opConditions, double[] reactionConditions, Reaction r)
+    protected void setGlobalVariables(double[] opConditions, double[] reactionConditions)
     {
-        super.setGlobalVariables(r);
-
-        this.g_V = g_V;
-        this.g_C_A = g_C_A;
-        this.g_C_B = g_C_B;
-
         this.g_opConditions = new double[opConditions.length];
 
         for (int i=0;i<opConditions.length;i++)
@@ -76,19 +58,6 @@ public class UncontrolledCSTR extends Reactor implements Function
         {
             this.g_reactionConditions[i]=reactionConditions[i];
         }
-    }
-
-    public double calculateExitConcentration(double[] opConditions, double[] reactionConditions, Reaction r)
-    {
-        this.setGlobalVariables(opConditions,reactionConditions,r);
-
-        double h = 0.01; //step size in minutes
-
-        double C = RK4.integrate(0.0,0.0,h,this);
-
-        this.resetGlobalVariables();
-
-        return C;
     }
 
     public boolean equals(Object comparator)
@@ -122,23 +91,35 @@ public class UncontrolledCSTR extends Reactor implements Function
                 return false;
         }
 
-        if(this.g_V != cast.g_V || this.g_C_A != cast.g_C_A || this.g_C_B != cast.g_C_B)
-            return false;
-
         return true;
     }
 
-    public double calculateValue(double C, double t)
+    public double calculateExitConcentration(double x, double y, double h, double[] opConditions, double[] reactionConditions, int n)
     {
-        // X = (k_A*τ)/(1 + k_A*τ)
-        // τ = V/v_0
-        double X = (this.g_reactionConditions[0]*this.g_V/this.g_opConditions[0])/(1+this.g_reactionConditions[0]*this.g_V/this.g_opConditions[0]);
+        this.setGlobalVariables(opConditions,reactionConditions);
 
-        // dC_B/dt = -v_0*C_B + k_A*C_A
-        // C_B = C_A0*X
-        this.g_C_B = -this.g_opConditions[0]*this.g_reactionConditions[1]*X+this.g_reactionConditions[0]*C;
+        double C = RK45.performStep(x,y,h,this,n);
 
-        // dC_A/dt = v_0*(C_A - C_A0) - k_A*C_A
-        return this.g_opConditions[0]*(this.g_reactionConditions[1]-C)-this.g_reactionConditions[0]*C;
+        this.resetGlobalVariables();
+
+        return C;
+    }
+
+    public double calculateValue(double C, double t, int n)
+    {
+        if(n == 1)
+        {
+            // dC_A/dt = v_0*(C_A0 - C_A) - k_A*C_A
+            return this.g_opConditions[0]*(this.g_reactionConditions[1]-C)-this.g_reactionConditions[0]*C;
+        }
+
+        if(n==2)
+        {
+            // dC_B/dt = -v_0*C_B + k_A*C_A
+            return -this.g_opConditions[0]*C+this.g_reactionConditions[0]*C;
+        }
+
+        else
+            return 0;
     }
 }

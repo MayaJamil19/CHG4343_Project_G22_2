@@ -1,4 +1,4 @@
 public interface Function
 {
-    public double calculateValue(double x, double y);
+    public double calculateValue(double x, double y, int n);
 }
