@@ -6,7 +6,15 @@ public abstract class Reactor
 
     public boolean equals(Object comparator)
     {
-        if(comparator==null) return false;
-        else return (this.getClass()==comparator.getClass());
+        if(comparator==null)
+        {
+            System.out.println("Object is null");
+            return false;
+        }
+
+        if(this.getClass()!=comparator.getClass())
+            return false;
+
+        return true;
     }
 }

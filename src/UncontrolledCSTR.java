@@ -3,10 +3,18 @@ public class UncontrolledCSTR extends Reactor implements Function
     private double[] g_opConditions;
     private double[] g_reactionConditions;
 
+    private double C_A;
+
     public UncontrolledCSTR()
     {
         super();
         this.resetGlobalVariables();
+    }
+
+    public UncontrolledCSTR(double C_A)
+    {
+        //add null check
+        this.C_A =C_A;
     }
 
     public UncontrolledCSTR(UncontrolledCSTR source)
@@ -30,6 +38,8 @@ public class UncontrolledCSTR extends Reactor implements Function
         {
             this.g_reactionConditions[i]=source.g_reactionConditions[i];
         }
+
+        this.C_A = source.C_A;
     }
 
     public UncontrolledCSTR clone()
@@ -58,6 +68,16 @@ public class UncontrolledCSTR extends Reactor implements Function
         {
             this.g_reactionConditions[i]=reactionConditions[i];
         }
+    }
+
+    public void setC_A(double C_A)
+    {
+        this.C_A = C_A;
+    }
+
+    public double getC_A()
+    {
+        return this.C_A;
     }
 
     public boolean equals(Object comparator)
@@ -91,6 +111,9 @@ public class UncontrolledCSTR extends Reactor implements Function
                 return false;
         }
 
+        if(cast.C_A != this.C_A)
+            return false;
+
         return true;
     }
 
@@ -98,7 +121,9 @@ public class UncontrolledCSTR extends Reactor implements Function
     {
         this.setGlobalVariables(opConditions,reactionConditions);
 
-        double C = RK45.performStep(x,y,h,this,n);
+        //double C = RK45.performStep(x,y,h,this,n);
+
+        double C = Euler.step(x,y,h,this,n);
 
         this.resetGlobalVariables();
 
@@ -109,14 +134,15 @@ public class UncontrolledCSTR extends Reactor implements Function
     {
         if(n == 1)
         {
-            // dC_A/dt = v_0*(C_A0 - C_A) - k_A*C_A
+            // dC_A/dt = v_0*(C_A0 - C_A) - r_A
             return this.g_opConditions[0]*(this.g_reactionConditions[1]-C)-this.g_reactionConditions[0]*C;
         }
 
-        if(n==2)
+        if(n == 2)
         {
+            this.C_A = this.g_opConditions[0]*(this.g_reactionConditions[1]-C)-this.g_reactionConditions[0]*C;
             // dC_B/dt = -v_0*C_B + k_A*C_A
-            return -this.g_opConditions[0]*C+this.g_reactionConditions[0]*C;
+            return -this.g_opConditions[0]*C+this.g_reactionConditions[0]*this.C_A;
         }
 
         else

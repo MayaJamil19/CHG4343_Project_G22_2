@@ -1,6 +1,6 @@
 public class RK45
 {
-    public static double performStep(double x, double y, double h, Function f, int n)
+    public static double step(double x, double y, double h, Function f, int n)
     {
         double[] k = {0.,0.,0.,0.,0.,0.};
 
@@ -14,6 +14,6 @@ public class RK45
             k[5] = h*f.calculateValue(x+0.5*h,y-(8./27.)*k[0]+2*k[1]-(3544./2565.)*k[2]+(1859./4104.)*k[3]-(11./40.)*k[4],i);
         }
 
-        return y+(25./216.)*k[0]+(6656./12825.)*k[2]+(28561./56430.)*k[3]-(9./50.)*k[4]+(2./55.)*k[5];
+        return y+(16./135.)*k[0]+(6656./12825.)*k[2]+(28561./56430.)*k[3]-(9./50.)*k[4]+(2./55.)*k[5];
     }
 }
