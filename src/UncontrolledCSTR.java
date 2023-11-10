@@ -155,6 +155,9 @@ public class UncontrolledCSTR extends Reactor implements Function
                 return false;
         }
 
+        if(cast.V != this.V)
+            return false;
+
         if(cast.outputValues.length != this.outputValues.length)
             return false;
 
@@ -204,10 +207,7 @@ public class UncontrolledCSTR extends Reactor implements Function
             //System.out.println("C_A0 = " + this.outputValues[this.currentRun][0] + "; C_B0 = " + this.outputValues[this.currentRun][1]);
             this.outputValues[this.currentRun + 1][0] = this.calculateExitConcentration(t, this.outputValues[this.currentRun][0], h, 1);
             this.outputValues[this.currentRun + 1][1] = this.calculateExitConcentration(t, this.outputValues[this.currentRun][1], h, 2) + this.outputValues[this.currentRun + 1][0]*this.g_reactionConditions[0];
-            Math.max(100 * Math.abs(this.outputValues[this.currentRun + 1][0] - this.outputValues[this.currentRun + 1][0])
-                            / Math.abs(this.outputValues[this.currentRun + 1][0]),
-                    100 * Math.abs(this.outputValues[this.currentRun + 1][1] - this.outputValues[this.currentRun + 1][1])
-                            / Math.abs(this.outputValues[this.currentRun + 1][1]));
+            
             t += h;
             this.currentRun++;
         }
