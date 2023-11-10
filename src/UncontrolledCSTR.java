@@ -111,13 +111,12 @@ public class UncontrolledCSTR extends Reactor implements Function
         return this.V;
     }
 
-    public double calculateExitConcentration(double x, double y, double h, double[] opConditions, double[] reactionConditions, int n)
+    public double calculateExitConcentration(double x, double y, double h, int n)
     {
         //this.setGlobalVariables(opConditions,reactionConditions);
 
-        //double C = RK45.performStep(x,y,h,this,n);
-
-        double C = Euler.step(x,y,h,this,n);
+        double C = RK45.step(x,y,h,this,n);
+        //double C = Euler.step(x,y,h,this,n);
 
         //this.resetGlobalVariables();
 
@@ -169,18 +168,6 @@ public class UncontrolledCSTR extends Reactor implements Function
         return true;
     }
 
-    public double calculateExitConcentration(double x, double y, double h, int n)
-    {
-        //this.setGlobalVariables(opConditions,reactionConditions);
-
-        //double C = RK45.performStep(x,y,h,this,n);
-        double C = Euler.step(x,y,h,this,n);
-
-        //this.resetGlobalVariables();
-
-        return C;
-    }
-
     public double calculateValue(double t, double C, int n)
     {
         if(n == 1)
@@ -199,22 +186,30 @@ public class UncontrolledCSTR extends Reactor implements Function
             return 0;
     }
 
-    public void runCSTR(double runTime, double h) {
+    public double[][] runCSTR(double runTime, double h) {
         double t = 0;
         double epsilon = 1.0;
+        double[][] values = new double[100][3];
 
-        while (t < runTime-1) {
+        while (t < runTime-1)
+        {
+            values[this.currentRun][0] = t;
+            values[this.currentRun][1] = this.outputValues[this.currentRun][0];
+            values[this.currentRun][2] = this.outputValues[this.currentRun][1];
+
             //System.out.println("C_A0 = " + this.outputValues[this.currentRun][0] + "; C_B0 = " + this.outputValues[this.currentRun][1]);
             this.outputValues[this.currentRun + 1][0] = this.calculateExitConcentration(t, this.outputValues[this.currentRun][0], h, 1);
-            this.outputValues[this.currentRun + 1][1] = this.calculateExitConcentration(t, this.outputValues[this.currentRun][1], h, 2) + this.outputValues[this.currentRun + 1][0]*this.g_reactionConditions[0];
+            this.outputValues[this.currentRun + 1][1] = this.calculateExitConcentration(t, this.outputValues[this.currentRun][1], h, 2) + this.outputValues[this.currentRun][0]*this.g_reactionConditions[0];
             
             t += h;
             this.currentRun++;
         }
         this.currentRun = 0;
+
+        return values;
     }
 
     public String toString() {
-        return "C_A: " + this.outputValues[99][0] + " ; C_B: " + this.outputValues[99][1];
+        return "C_A: " + this.outputValues[499][0] + " ; C_B: " + this.outputValues[499][1];
     }
 }
