@@ -16,11 +16,8 @@ public class TestCase1_Driver
 
         UncontrolledCSTR cstr = new UncontrolledCSTR(1, opConditions, reactionConditions);
 
-        double[][] values = cstr.runCSTR(100, 1);
+        cstr.runCSTR(500, 1);
 
-        for(int i=0; i<100; i++)
-        {
-            System.out.println("t: "+values[i][0]+" ; C_A: "+values[i][1]+" ; C_B: "+values[i][2]);
-        }
+        System.out.println(cstr.toString());
     }
 }
