@@ -4,7 +4,6 @@ public class TestCase1_Driver
 {
     public static void main(String[] args)
     {
-
         DecimalFormat df_t = new DecimalFormat("0.00");
         DecimalFormat df_C = new DecimalFormat("0.#####");
 
@@ -17,8 +16,11 @@ public class TestCase1_Driver
 
         UncontrolledCSTR cstr = new UncontrolledCSTR(1, opConditions, reactionConditions);
 
-        cstr.runCSTR(100, 1);
+        double[][] values = cstr.runCSTR(100, 1);
 
-        System.out.println(cstr.toString());
+        for(int i=0; i<100; i++)
+        {
+            System.out.println("t: "+values[i][0]+" ; C_A: "+values[i][1]+" ; C_B: "+values[i][2]);
+        }
     }
 }
