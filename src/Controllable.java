@@ -1,7 +1,8 @@
 public interface Controllable
 {
     double setManipulatedVariable(double manipulatedVariable);
-    double getProcessVariable();
-    void calculateControl();
+    double readControlledVariable(double controlledVariable);
+    //double getProcessVariable();
+    //void calculateControl();
 }
 
