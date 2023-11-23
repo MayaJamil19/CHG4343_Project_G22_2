@@ -72,6 +72,9 @@ public abstract class Controller implements Controllable
 
     //additional methods
 
+    public abstract double setManipulatedVariable(double manipulatedVariable);
+    public abstract double readControlledVariable(double controlledVariable);
+
     public double getTimeStep()
     {
         double currentTime=System.currentTimeMillis();
@@ -81,8 +84,8 @@ public abstract class Controller implements Controllable
         return timeStep;
     }
 
-    public abstract double getProcessVariables();
-    public abstract double setControlVariables();
+    //public abstract double getProcessVariables();
+    //public abstract double setControlVariables();
 
   /* public double calculateError (Controllable control)
    {
