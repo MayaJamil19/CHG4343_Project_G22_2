@@ -1,6 +1,6 @@
 public interface Controllable
 {
-    double setControlVariable(double controlVariable);
+    double setManipulatedVariable(double manipulatedVariable);
     double getProcessVariable();
     void calculateControl();
 }
