@@ -11,6 +11,9 @@ public class PIController extends Controller
         return new PIController(this.getReactor(), this.getControllerKs());
     }
 
+
+    //this is the method for the controller, it gets the type of control (see end of outline for project
+    //updates the flowrate=control varible = manipulated
     public void calculateControl()
     {
         double error=this.getSetPoint()-this.getReactor().getProcessVariables();
