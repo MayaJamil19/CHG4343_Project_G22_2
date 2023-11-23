@@ -1,3 +1,4 @@
+//Child class PIController of the parent Controller
 public class PIController extends Controller
 {
 
@@ -6,6 +7,8 @@ public class PIController extends Controller
         super(reactor, controllerKs);
         //add to this
     }
+    //copy constructor 
+    
     public Controller clone()
     {
         return new PIController(this.getReactor(), this.getControllerKs());
